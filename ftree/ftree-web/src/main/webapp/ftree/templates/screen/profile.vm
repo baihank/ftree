@@ -1,0 +1,211 @@
+<div class="header">
+	<a href="$userList" class="link" >孔家家谱网</a>
+</div>
+
+<div id="navigation">
+	<div id="menu"> 
+		<ul>
+			<li><a href="$userList">家族首页</a></li>
+			<li>|</li>
+            <li><a href="$edit?userId=$!{userBaseDO.userId}&isEdit=1">编辑成员</a></li>
+            <li>|</li>
+            <li><a href="$edit">新增成员</a></li>
+		</ul>			
+	</div>
+	<form id="J_search_form" method="post" action="$userList" target="_blank">
+		<div id="search">
+			<input class="input-medium search-query" type="text" name="userName" /> 
+			<button type="submit" class="btn">查找</button>
+		</div>
+	</form>
+</div>
+
+<div class="profile-title">
+	人物信息：#if($userBaseDO.userName) $userBaseDO.userName #else XXX #end		
+</div>
+ 
+<div id="profile">
+	<div id="profile_tree">
+		<div class="tree-parent">
+			<div class="couple">
+				#if(!$userBaseDO.mother)
+					<a href="$edit?userId=$!{userBaseDO.userId}&isEdit=1" target="_blank" class="female-member">
+						待补充
+					</a>
+				#else
+					<a href="$userList?userName=$!{userBaseDO.mother}" target="_blank" class="female-member">
+					母：$userBaseDO.mother
+					</a>
+				#end
+			
+				
+				<p class="couple-relation">~</p> 
+				
+				#if(!$userBaseDO.father)
+					<a href="$edit" class="male-member">
+						父：待补充
+					</a>					
+				#elseif($userBaseDO.parentId<=0 && (!$properFathers))
+					<a href="$edit?userName=$!{userBaseDO.father}" target="_blank" class="male-member">
+						父：$!{userBaseDO.father}
+					</a>
+				#elseif($userBaseDO.parentId<=0 && $properFathers)
+					<a href="$edit?userId=$!{userBaseDO.userId}&flag=1&isEdit=1" target="_blank" class="male-member">
+						父：$!{userBaseDO.father}
+					</a>
+				#else
+					<a href="$profile?userId=$!{userBaseDO.parentId}" class="male-member">
+						父：$!{userBaseDO.father}
+					</a>
+				#end
+				
+				<div class="parent-child">
+					<img src="$ftreeContent.getURI('/scripts/pics/child.jpg')">
+				</div>					
+			</div>	
+		</div>
+		<div class="arrow-img">
+			<img src="$ftreeContent.getURI('/scripts/pics/child1.jpg')">
+		</div>	
+
+		<div class="profile-img">
+			<img src="$ftreeContent.getURI('/scripts/pics/kong.jpg')">
+		</div>
+
+		<div class="tree-self">
+			<div class="couple">
+				#if(!$userBaseDO.wife)
+					<a href="$edit?userId=$!{userBaseDO.userId}&isEdit=1" target="_blank" class="female-member">
+						待补充
+					</a>
+				#else
+					<a href="$userList?userName=$!{userBaseDO.wife}" target="_blank" class="female-member">
+						妻：$userBaseDO.wife
+					</a>
+				#end	
+			
+				<p class="couple-relation">~</p> 				
+				
+				<a href="$edit?userId=$!{userBaseDO.userId}&isEdit=1" target="_blank" class="male-member">$userBaseDO.userName</a> 				
+				
+				<p class="brother-relation">. . .</p>
+			
+				<div class="div-brother">
+					<ul class="ul-brothers">
+						#foreach($brother in $brothers)
+							#if($brother.userId==0)
+								<li><a href="#" class="male-member">无信息</a></li>
+							#else
+								<li>
+									<a href="$profile?userId=$!{brother.userId}" class="male-member">
+										#if($!{brother.sex}==1) 兄弟: #else 姐妹: #end $brother.userName
+									</a>
+								</li>
+							#end						
+						#end
+					</ul>						
+				</div>	
+			</div>				
+		</div>
+
+		<div class="arrow-img">
+			<img src="$ftreeContent.getURI('/scripts/pics/child1.jpg')">
+		</div>	
+
+		<div class="div-children">
+			<ul class="ul-children">
+				#foreach($child in $children)
+					#if($child.userId==0)
+						<li><a href="#" class="male-member">无信息</a></li>
+					#else
+						<li>
+							<a href="$profile?userId=$!{child.userId}" class="male-member">
+								#if($!{child.sex}==1) 子: #else 女: #end $child.userName
+							</a>
+						</li>
+					#end						
+				#end
+			</ul>
+		</div>					
+	</div>
+
+	<div id="profile_log">
+		<div class="border">				
+			<div class="log_title">
+				#if($userBaseDO.userName) $userBaseDO.userName #else XXX #end生平介绍
+			</div>
+	
+			<div class="line"></div>
+				<dl>
+					<dt>
+						<div class="outer_cycle">
+	     					<div class="inner_cycle"></div>
+						</div >
+						<div class="dt-title">婚姻信息</div>
+					</dt>
+					<dd>
+						#if($marrige)
+							$marrige
+						#else
+							尚无信息
+						#end
+					</dd>
+					<dt>
+						<div class="outer_cycle">
+	     					<div class="inner_cycle"></div>
+						</div >
+						<div class="dt-title">生子信息</div>
+					</dt>
+					<dd>
+						#if($childrenDesc)
+							$childrenDesc
+						#else
+							尚无信息
+						#end
+					</dd>
+					<dt>
+						<div class="outer_cycle">
+	     					<div class="inner_cycle"></div>
+						</div >
+						<div class="dt-title">教育信息</div>
+					</dt>
+					<dd>
+						#if($education)
+							$education
+						#else
+							尚无信息
+						#end
+					</dd>
+					<dt>
+						<div class="outer_cycle">
+	     					<div class="inner_cycle"></div>
+						</div >
+						<div class="dt-title">个人成就</div>
+					</dt>
+					<dd>
+						#if($achievement)
+							$achievement
+						#else
+							尚无信息
+						#end
+					</dd>
+					
+					#if($death)
+						<dt>
+							<div class="outer_cycle">
+		     					<div class="inner_cycle"></div>
+							</div >
+							<div class="dt-title">离世信息</div>
+						</dt>
+						<dd>
+							$death
+						</dd>
+					#end
+				</dl> 
+			</div> 
+		
+			<div class="out"> 
+				<div class="in"></div> 			
+			</div>
+	</div>
+</div>

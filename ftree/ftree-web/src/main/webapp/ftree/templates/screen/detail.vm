@@ -1,0 +1,14 @@
+<form method="post">
+  $csrfToken.hiddenField
+  <input type="hidden" name="action" value="user_add_action"/>
+  <input type="text" name="userName" />
+    
+  <select name="sex">
+    <option value ="0">ÄÐ</option>
+    <option value ="1">Å®</option>
+  </select>
+  
+  <input type="text" name="gmtBirth" />
+  
+  <input type="submit" name="event_submit_do_add_user"/>
+</form>

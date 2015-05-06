@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	default-autowire="byName">
+	<!-- 数据库配置 -->	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+    	<property name="url" value="jdbc:mysql://121.40.157.193:3306/family_tree?user=root&amp;password=kbhkbh&amp;useUnicode=true&amp;characterEncoding=UTF-8" />  
+	</bean>  
+  
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+    	<property name="dataSource" ref="dataSource" />  
+	</bean>  
+  
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+    	<property name="dataSource" ref="dataSource" />  
+	</bean>  
+	
+	<!-- mapper 配置 -->
+	<bean id="userBaseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.family.tree.mapper.UserBaseMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>	
+	
+	<!-- mapper 配置 -->
+	<bean id="lifeLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.family.tree.mapper.LifeLogMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>	
+	
+</beans>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.family.tree.mapper.UserBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.family.tree.domain.UserBaseDO" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="family_name" property="familyName" jdbcType="VARCHAR" />
+    <result column="identity_num" property="identityNum" jdbcType="BIGINT" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="BIGINT" />
+    <result column="post_code" property="postCode" jdbcType="INTEGER" />
+    <result column="mail_addr" property="mailAddr" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="gmt_birth" property="gmtBirth" jdbcType="DATE" />
+    <result column="gmt_death" property="gtmDeath" jdbcType="DATE" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="birth_addr" property="birthAddr" jdbcType="VARCHAR" />
+    <result column="base_info" property="baseInfo" jdbcType="VARCHAR" />      
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="last_modify_user" property="lastModifyUser" jdbcType="VARCHAR" />
+    <result column="features" property="features" jdbcType="VARCHAR" />
+    <result column="father" property="father" jdbcType="VARCHAR" />
+    <result column="mother" property="mother" jdbcType="VARCHAR" />
+    <result column="wife" property="wife" jdbcType="VARCHAR" />
+    <result column="family_rank" property="familyRank" jdbcType="INTEGER" />    
+    <result column="sub_group" property="subGroup" jdbcType="VARCHAR" />
+  </resultMap> 
+
+  <sql id="Base_Column_List" >
+    user_id, user_name, family_name, identity_num, education, school, title, native_place, address, phone_num, post_code, mail_addr,
+    sex, gmt_birth, gmt_death, parent_id, birth_addr, base_info, status, gmt_create, gmt_modified, 
+    last_modify_user, features, father, mother, wife, family_rank, sub_group
+  </sql>
+  
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_base
+    where user_id = #{userId,jdbcType=BIGINT} and status=0
+  </select>
+  
+  <select id="selectByParentId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_base
+    where parent_id = #{parentId,jdbcType=BIGINT} and status=0
+  </select> 
+  
+  <select id="countByUserName" resultType="java.lang.Integer" parameterType="com.family.tree.utils.UserQuery" >
+    select 
+    count(*)
+    from user_base
+    where status=0
+    <if test="userName != null">  
+        and user_name like CONCAT('%',#{userName},'%')  
+    </if>
+  </select>
+  
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="com.family.tree.utils.UserQuery" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_base
+    where status=0
+    <if test="userName != null">  
+        and user_name like CONCAT('%',#{userName},'%')  
+    </if>
+    limit #{startPos,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByUserNameAndFather" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_base
+    where user_name = #{userName,jdbcType=VARCHAR} and father = #{father,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insert" parameterType="com.family.tree.domain.UserBaseDO" useGeneratedKeys="true" keyProperty="userId" > 
+    insert into user_base (user_name, family_name, identity_num, education, school, title, native_place, address, phone_num, post_code, mail_addr,
+      sex, gmt_birth, gmt_death, parent_id, birth_addr, base_info, 
+      status, gmt_create, gmt_modified, last_modify_user, features, father, mother, wife, family_rank, sub_group)
+    values (#{userName,jdbcType=VARCHAR}, #{familyName,jdbcType=VARCHAR}, #{identityNum,jdbcType=BIGINT}, #{education,jdbcType=VARCHAR}, 
+      #{school,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{nativePlace,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{phoneNum,jdbcType=BIGINT}, 
+      #{postCode,jdbcType=INTEGER}, #{mailAddr,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{gmtBirth,jdbcType=DATE}, #{gmtDeath,jdbcType=DATE}, #{parentId,jdbcType=BIGINT}, 
+      #{birthAddr,jdbcType=VARCHAR}, #{baseInfo,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, NOW(), 
+      NOW(), #{lastModifyUser,jdbcType=VARCHAR},#{features,jdbcType=VARCHAR},#{father,jdbcType=VARCHAR},
+      #{mother,jdbcType=VARCHAR}, #{wife,jdbcType=VARCHAR}, #{familyRank,jdbcType=INTEGER}, #{subGroup,jdbcType=VARCHAR} ) 
+  </insert>
+  
+  <update id="delete" parameterType="java.lang.Long" >
+	  update user_base 
+	  set
+	  status=-1,gmt_modified = NOW()
+	  where user_id = #{userId,jdbcType=BIGINT}
+  </update> 
+  
+  <update id="update" parameterType="com.family.tree.domain.UserBaseDO" >
+    update user_base 
+	<set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="familyName != null">
+        family_name = #{familyName,jdbcType=VARCHAR},
+      </if> 
+      
+      <if test="identityNum > 0">
+        identity_num = #{identityNum,jdbcType=BIGINT}, 
+      </if> 
+      
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR}, 
+      </if> 
+      
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR}, 
+      </if> 
+      
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR}, 
+      </if> 
+      <if test="education != null">
+        native_place = #{nativePlace,jdbcType=VARCHAR}, 
+      </if> 
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR}, 
+      </if> 
+      
+      <if test="phoneNum != null">
+        phone_num = #{phoneNum,jdbcType=BIGINT}, 
+      </if> 
+      
+      <if test="postCode != null">
+        post_code = #{postCode,jdbcType=INTEGER}, 
+      </if> 
+      
+      <if test="mailAddr != null">
+        mail_addr = #{mailAddr,jdbcType=TINYINT},
+      </if>
+
+      <if test="sex > 0">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      
+      <if test="gmtBirth != null">
+        gmt_birth = #{gmtBirth,jdbcType=DATE},
+      </if>
+      
+      <if test="gmtDeath != null">
+        gmt_death = #{gmtDeath,jdbcType=DATE},
+      </if>
+      
+      <if test="parentId > 0">
+        parent_id = #{parentId,jdbcType=TINYINT},
+      </if>
+      
+      <if test="birthAddr != null">
+        birth_addr = #{birthAddr,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="baseInfo != null">
+        base_info = #{baseInfo,jdbcType=VARCHAR},
+      </if>    
+      
+      <if test="father != null">
+        father = #{father,jdbcType=VARCHAR},
+      </if>   
+      
+      <if test="mother != null">
+        mother = #{mother,jdbcType=VARCHAR},
+      </if>   
+      
+      <if test="wife != null">
+        wife = #{wife,jdbcType=VARCHAR},
+      </if>  
+      
+      <if test="familyRank > 0">
+        family_rank = #{familyRank,jdbcType=INTEGER},
+      </if>
+      
+      <if test="subGroup != null">
+        sub_group = #{subGroup,jdbcType=VARCHAR},
+      </if>  
+      
+      gmt_modified = NOW(),
+      status = #{status,jdbcType=TINYINT}
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

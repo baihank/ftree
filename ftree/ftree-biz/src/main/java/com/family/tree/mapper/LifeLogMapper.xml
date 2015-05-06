@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.family.tree.mapper.LifeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.family.tree.domain.LifeLogDO" >
+  	<id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="gmt_start" property="gmtStart" jdbcType="DATE" />
+    <result column="gmt_end" property="gtmEnd" jdbcType="DATE" />    
+    <result column="log" property="log" jdbcType="VARCHAR" />
+    <result column="features" property="features" jdbcType="VARCHAR" />      
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap> 
+
+  <sql id="Base_Column_List" >
+    id, user_id, type, gmt_start, gmt_end, log, features, status, gmt_create, gmt_modified
+  </sql>
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from life_log
+    where id = #{id,jdbcType=BIGINT} and status=0
+  </select>
+  
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from life_log
+    where user_id = #{userId,jdbcType=BIGINT} and status=0
+  </select>
+  
+  <select id="selectByUserIdAndType" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from life_log
+    where user_id = #{userId,jdbcType=BIGINT} and type = #{type,jdbcType=TINYINT}
+  </select>
+  
+  <insert id="insert" parameterType="com.family.tree.domain.UserBaseDO" useGeneratedKeys="true" keyProperty="user_id" > 
+    insert into life_log (user_id, type, gmt_start, gmt_end, log, features, 
+      status, gmt_create, gmt_modified)
+    values (#{userId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, #{gmtStart,jdbcType=DATE}, #{gmtEnd,jdbcType=DATE}, 
+      #{log,jdbcType=VARCHAR}, #{features,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, NOW(), NOW()) 
+  </insert>
+  
+  <update id="delete" parameterType="java.lang.Long" >
+	  update life_log 
+	  set
+	  status=-1,gmt_modified = NOW()
+	  where user_id = #{userId,jdbcType=BIGINT} and type = #{type,jdbcType=TINYINT}
+  </update> 
+  
+  <update id="update" parameterType="com.family.tree.domain.UserBaseDO" >
+    update life_log 
+	<set>
+	  <if test="gmtStart != null">
+        gmt_start = #{gmtStart,jdbcType=DATE},
+      </if>
+      
+      <if test="gmtEnd != null">
+        gmt_end = #{gmtEnd,jdbcType=DATE},
+      </if>
+      
+      <if test="log != null">
+        log = #{log,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="features != null">
+        features = #{features,jdbcType=VARCHAR},
+      </if>
+      
+      gmt_modified = NOW(),
+      status = #{status,jdbcType=TINYINT}
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT} and type = #{type,jdbcType=TINYINT}
+  </update>
+</mapper>

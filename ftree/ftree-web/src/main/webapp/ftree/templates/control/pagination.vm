@@ -1,0 +1,117 @@
+#if($!quey.totalRecord !=0)
+
+#set($wpage = $!query.pageIndex)
+#if(!$wpage)
+	#set($wpage = 0)
+#end
+#set($tPage = $!query.totalPage)##int 总页数
+#if(!$tPage)
+	#set($tPage = 0)
+#end
+
+##--------------循环页码--------------
+#set($leftStart = 1)
+#set($leftEnd = 2)
+#set($mStart = $wpage - 2)
+#set($mEnd = $wpage + 2)
+#set($rStart = $tPage - 1)
+#set($rEnd = $tPage)
+#if ($mStart <= $leftEnd)
+	#set($leftStart = 0)
+	#set($leftEnd = 0)
+	#set($mStart = 1)
+#end
+#if ($mEnd >= $rStart)
+	#set($rStart = 0)
+	#set($rEnd = 0)
+	#set($mEnd = $tPage)
+	#if($mEnd <= 0)
+	 #set($mEnd = 1)
+	#end
+#end
+
+#set($prevPage = $wpage - 1)
+#if($prevPage>0)
+	<a class="pg-page pg-prev" onclick="$gotoPageP($prevPage)">上一页&nbsp;<span class="icop"></span></a>
+#end
+
+#if ($leftEnd > $leftStart)
+	#foreach($p in [${leftStart}..${leftEnd}])
+		<a href='#' class="pg-page" onclick="$gotoPageP($p)">$p</a>
+	#end
+	<span class="pg-remain">…</span>
+#end
+
+#foreach($p in [${mStart}..${mEnd}])
+	#if($p==$wpage)
+		$p
+	#else
+		<a href='#' class="pg-page" onclick="$gotoPageP($p)">$p</a>
+	#end
+#end
+
+#if ($rEnd > $rStart)
+	<span class="pg-remain">…</span>
+	#foreach($p in [${rStart}..${rEnd}])
+		<a href='#' class="pg-page" onclick="$gotoPageP($p)">$p</a>
+	#end
+#end
+
+#set($nextPage = $wpage + 1)
+#if ($wpage >= $tPage)
+下一页
+#else
+<a class="pg-page pg-next" onclick="$gotoPageP($nextPage)">下一页&nbsp;<span class="icon"></span></a>
+#end
+
+<span>共${tPage}页</span>
+
+<script language="javascript" type="text/javascript">
+function $gotoPage() {
+	var page = $wpage;
+	var tPage = $tPage;	
+	var newPage = document.getElementById("J_jumpTo").value;
+	if (newPage < 0) newPage = 1;
+	if(newPage > $tPage) newPage = $tPage;	
+	var f = document.forms["$formName"];
+	if (f) {
+		for(var i=0;i<f.elements.length;i++){
+			if(f.elements[i].name=="pageIndex"){
+				f.elements[i].value=newPage;
+			}
+		}		
+		f.submit();
+	}
+}
+function $gotoPageP(newPage) {
+	var f = document.forms["$formName"];
+	if (f) {
+		for(var i=0;i<f.elements.length;i++){
+			if(f.elements[i].name=="pageIndex"){
+				f.elements[i].value=newPage;
+			}
+		}		
+		f.submit();
+	}
+}
+function $gotoPageDelegate() {
+	try {
+		var c = 0;
+		if (document.all) {
+			c = window.event.keyCode;
+		}
+		if (c == 13) {
+			gotoPage();
+			return false;
+		}
+	}catch (e) {
+	}
+	return true;
+}
+</script>
+
+到第 <input type="text" id="J_jumpTo" size="3" class="pg-jump input-smini" value="$wpage" data-valid="{required:[false],regex:[/^[0-9]*[1-9][0-9]*$/,'格式错误']}" onkeypress="return $gotoPageDelegate()" />页
+<button type="submit" class="J_jumpToBtn btn btn-mini" onclick="$gotoPage()">确定</button>
+
+	
+#end

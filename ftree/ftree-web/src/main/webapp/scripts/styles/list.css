@@ -1,0 +1,122 @@
+body{
+	width:850px;
+	margin:0 auto;
+}
+
+#navigation { 
+	height: 35px;
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+	font-size: 100%; 
+	font-family:"Microsoft YaHei";
+	margin: 15px 3px;
+} 
+#menu {
+	width: 260px;
+	float: left;
+	font-size: 18px;
+}
+#search {
+	width:250px;
+	float:right;
+	padding-top:3px;
+	margin-right: 2px;
+}
+#menu ul { 
+	list-style: none; 
+	margin: 3px; 
+	padding: 0;
+	padding-top: 1px; 
+	padding-bottom: 1px;
+} 
+#menu li { 
+	display: inline; 
+} 
+#menu li a{ 
+	color: #90B4CF;
+	text-decoration: NONE;
+} 
+
+.header{
+	font-size: 220%; 
+	font-family:"Microsoft YaHei";
+	margin: 15px 3px;
+	padding: 0;
+}
+.header .link{
+	text-decoration: NONE;
+	color: #424242;
+}
+
+.search-prompt{
+	width:200px;
+	font-size: 18px;
+	font-family:"Microsoft YaHei";
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.search-item{
+	width: 100%;
+	height: 140px;
+	border: 1px solid #CAD4EB;
+	background-color: #F4F8FD;
+	border-radius: 10px;
+	margin-top: 30px;
+}
+
+.search-profile-img{
+	width: 120px;
+	height: 120px;
+	overflow: hidden;
+	margin-top: 10px;
+	margin-left: 10px;
+	border-radius: 50%;
+	float: left;
+}
+
+.search-profile-img img{
+	width: 100%;
+	height: 100%;
+}
+
+.search-result{
+	width: 650px;
+	float: left;
+	margin-top: 10px;
+	margin-left: 45px;
+	font-family:"Microsoft YaHei";
+}
+.item-introduction{
+	overflow: hidden;
+	height: 45px;
+}
+
+.item-introduction p{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin-top: 12px;
+	margin-bottom: 2px;
+
+	text-overflow:ellipsis; 
+}
+.item-title{
+	font-size: 1.5em;
+}
+
+.item-detail{
+	float: right;
+	font-size: 15px;
+	margin-top: 20px;
+}
+
+.pagenation{
+	text-align: center;
+	width: 100%;
+	font-size: 15px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family:"Microsoft YaHei";
+}

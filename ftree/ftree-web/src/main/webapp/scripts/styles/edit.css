@@ -1,0 +1,141 @@
+body{
+	width:850px;
+	margin:0 auto;
+}
+
+#navigation { 
+	height: 35px;
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+	font-size: 100%; 
+	font-family:"Microsoft YaHei";
+	margin: 15px 3px;
+} 
+#menu {
+	width: 260px;
+	float: left;
+	font-size: 18px;
+}
+#search {
+	width:250px;
+	float:right;
+	padding-top:3px;
+	margin-right: 2px;
+}
+#menu ul { 
+	list-style: none; 
+	margin: 3px; 
+	padding: 0;
+	padding-top: 1px; 
+	padding-bottom: 1px;
+} 
+#menu li { 
+	display: inline; 
+} 
+#menu li a{ 
+	color: #90B4CF;
+	text-decoration: NONE;
+} 
+.header{
+	font-size: 220%; 
+	font-family:"Microsoft YaHei";
+	margin: 15px 3px;
+	padding: 0;
+}
+.header .link{
+	text-decoration: NONE;
+	color: #424242;
+}
+#J_main_form{
+	background: #F4F4F4;
+	margin: 15px 3px;
+	font-size: 100%; 
+	font-family:"Microsoft YaHei";
+	padding-top: 5px;
+}
+
+.msg{
+	font-size: 150%;
+	color: rgb(0, 139, 255);
+	margin-left: 39px;
+}
+
+dd{
+	width: 80%; 
+	margin: 15px 40px;
+}
+
+
+select{
+	width: 150px; 
+	height: 23px;
+}
+
+.struct{
+	float:left;
+	margin-top: 0px;
+	margin-bottom: 20px;
+}
+
+#J_main_form .struct-label{
+	width: 100px;
+	float: left;
+}
+
+#J_main_form .struct-input{
+	float:left;
+}
+
+#J_main_form .struct-memo{
+	float: left;
+	color: rgb(255, 116, 0);
+	margin-left: 5px;
+}
+
+
+#J_main_form .unstruct{
+	width: 230px;
+	margin-bottom: 5px;
+}
+
+#holder{
+	float:left;
+	margin-bottom: 15px;
+}
+
+.hrStyle{ 
+	border:1px solid #E4E4E4; 
+	width:95%;
+	margin-left: 38px;
+}
+
+.unstruct label{
+	color:#4782AE;
+	text-decoration:underline;
+}
+
+#J_main_form textarea{
+	width: 100%; 
+	height: 130px;
+	text-align:left;
+}
+
+#J_main_form .btn{
+	background:#FFD6A6;
+	height: 1.9em;
+	width: 5em;
+	font-size:150%;
+	border-radius:5px;
+	margin-top:40px;
+	margin-bottom:30px;
+	font-family:"Microsoft YaHei";
+	color:#716868;
+}
+
+#address{
+	width:280px
+}
+
+#birthAddr{
+	width:280px
+}

@@ -1,0 +1,61 @@
+<form id="J_filter_form" name="J_filter_form" method="post" action="">
+	<input type="hidden" id="JpageIndex" name="pageIndex" value="$!{query.pageIndex}">
+	<div class="header">
+		<a href="#" class="link" >孔家家谱网</a>
+	</div>
+	
+	
+		
+	
+	<div id="navigation">
+		<div id="menu"> 
+			<ul>
+				<li><a href="#">家族首页</a></li>
+				<li>|</li>
+				<li><a href="$edit" target="_blank">新增成员</a></li>
+			</ul>			
+		</div>
+		<form id="J_search_form" method="post" action="$userList" target="_blank">
+			<div id="search">
+				<input class="input-medium search-query" name="userName" type="text" value="$!{query.userName}"/>  
+				<button type="submit" class="btn">查找</button>
+			</div>
+		</form>
+	</div>
+	
+	#if($query.result)
+		#set($items = $!query.result)
+	#end
+	
+	<div class="search-prompt">
+		检索结果如下：
+	</div>
+	
+	#if($items)
+		#foreach($item in $items)
+			<div class="search-item">
+				<div class="search-profile-img"><img src="$ftreeContent.getURI('/scripts/pics/kong.jpg')"></div>
+				<div class="search-result">
+					<div class="item-title">$!{item.userName}</div>
+					<div class="item-introduction">
+						<p>
+							$!{item.baseInfo}
+						</p>
+					</div>
+					<div class="item-detail">
+						<a href="$profile?userId=$!{item.userId}" target="_blank">查看详细资料及家族关系</a>
+					</div>			
+				</div>
+			</div>			
+		#end
+	#end
+</form>
+
+<div class="main-wrap">
+	<div class="pagination">
+	    #if($query && $!items.size()>0 && $query.totalPage > 0)
+	        $control.setTemplate("/pagination.vm").setParameter("query",$!query).setParameter("formName","J_filter_form")
+	    #end
+	</div>
+
+</div>	

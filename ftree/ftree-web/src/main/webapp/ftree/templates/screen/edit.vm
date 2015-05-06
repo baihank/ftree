@@ -1,0 +1,241 @@
+<div class="header">
+	<a href="http://pearl.admin.taobao.org/" class="link" >孔家家谱网</a>
+</div>
+<div id="navigation">
+	<div id="menu"> 
+		<ul>
+			<li><a href="$userList">家族首页</a></li>
+			#if($userBaseDO)
+				<li>|</li>
+				<li><a href="$profile?userId=$!{userBaseDO.userId}" target="_blank">家族关系</a></li>
+			#end			
+			<li>|</li>
+			<li><a href="$edit" target="_blank">新增成员</a></li>
+		</ul>			
+	</div>
+	<form id="J_search_form" method="post" action="$userList" target="_blank">
+		<div id="search">
+			<input class="input-medium search-query" name="userName" type="text" /> 
+			<button type="submit" class="btn">查找</button>
+		</div>
+	</form>
+</div>
+<div>
+	<form id="J_main_form">
+		#set($userStatus = $!{userBaseDO.status})		
+		#if($msg)
+			<div class="msg"> 
+				$!{msg}
+			</div>			
+		#end
+		$csrfToken.hiddenField
+  		<input type="hidden" name="action" value="edit_action"/>
+  		<input type="hidden" name="userId" value="$!{userBaseDO.userId}"/>
+		<input type="hidden" name="status" value="$!{userStatus}"/>
+		<dl>
+			<dd class="struct">
+				<label class="struct-label">身份证名：</label>
+				#if($!{userBaseDO.userId})
+					<input class="struct-input" type="text" #if($!{userBaseDO.userId}) readonly="readonly" #end name="userName" value="$!{userBaseDO.userName}" /> 
+				#elseif($!{userName})
+					<input class="struct-input" type="text" readonly="readonly" name="userName" value="$!{userName}" /> 
+				#else
+					<input class="struct-input" type="text" name="userName"/> 
+				#end
+				<label class="struct-memo">(填写身份证上的名字)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">谱名：</label>
+				#if($!{userBaseDO.familyName})
+					<input class="struct-input" type="text" name="familyName" value="$!{userBaseDO.familyName}" /> 
+				#else
+					<input class="struct-input" type="text" name="familyName"/> 
+				#end
+				<label class="struct-memo">(填写谱名，带辈分的名字，若没有可以不填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">身份证号码：</label>
+				#if($!{userBaseDO.identityNum} && $!{userBaseDO.identityNum}>0)
+					<input class="struct-input" type="text" name="identityNum" value="$!{userBaseDO.identityNum}" /> 
+				#else
+					<input class="struct-input" type="text" name="identityNum"/> 
+				#end
+				<label class="struct-memo">(填写身份证号码，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">学历：</label>
+				<select class="struct-input" name="education">
+					  #foreach($educationType in $educationTypes)
+					  	<option #if(${userBaseDO.education}==${educationType.value}) selected #end value="${educationType.value}">${educationType.desc}</option>
+					  #end
+					</select>
+				<label class="struct-memo">(选择学历，建议填写，也可以不填写!)</label>
+			</dd>			
+			<dd class="struct">
+				<label class="struct-label">毕业学校：</label>
+				#if($!{userBaseDO.school})
+					<input class="struct-input" type="text" name="school" value="$!{userBaseDO.school}" /> 
+				#else
+					<input class="struct-input" type="text" name="school"/> 
+				#end
+				<label class="struct-memo">(填写最后毕业学校，建议填写，也可以不填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">职称：</label>
+				#if($!{userBaseDO.title})
+					<input class="struct-input" type="text" name="title" value="$!{userBaseDO.title}" /> 
+				#else
+					<input class="struct-input" type="text" name="title"/> 
+				#end
+				<label class="struct-memo">(职称，如教授、高级工程师等，可以不填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">籍贯：</label>
+				#if($!{userBaseDO.nativePlace})
+					<input class="struct-input" type="text" name="nativePlace" value="$!{userBaseDO.nativePlace}" /> 
+				#else
+					<input class="struct-input" type="text" name="nativePlace"/> 
+				#end
+				<label class="struct-memo">(籍贯，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">现住址：</label>
+				#if($!{userBaseDO.address})
+					<input class="struct-input" type="text" id="address" name="address" value="$!{userBaseDO.address}" /> 
+				#else
+					<input class="struct-input" type="text" id="address" name="address"/> 
+				#end
+				<label class="struct-memo">(现居住地址，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">邮编：</label>
+				#if($!{userBaseDO.postCode} && $!{userBaseDO.postCode}>0)
+					<input class="struct-input" type="text" name="postCode" value="$!{userBaseDO.postCode}" /> 
+				#else
+					<input class="struct-input" type="text" name="postCode"/> 
+				#end
+				<label class="struct-memo">(现居住地址的邮编，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">手机：</label>
+				#if($!{userBaseDO.phoneNum} && $!{userBaseDO.phoneNum}>0)
+					<input class="struct-input" type="text" name="phoneNum" value="$!{userBaseDO.phoneNum}" /> 
+				#else
+					<input class="struct-input" type="text" name="phoneNum"/> 
+				#end
+				<label class="struct-memo">(手机号码，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">电子邮箱：</label>
+				#if($!{userBaseDO.mailAddr})
+					<input class="struct-input" type="text" name="mailAddr" value="$!{userBaseDO.mailAddr}" /> 
+				#else
+					<input class="struct-input" type="text" name="mailAddr"/> 
+				#end
+				<label class="struct-memo">(电子邮箱地址，建议填写，方便后续联络!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">性别：</label>
+				<input type="radio" name="sex" value="1" #if((!$userBaseDO) || $!{userBaseDO.sex}==1) checked="true" #end>男</input>  
+				<input type="radio" name="sex" value="2" #if($userBaseDO && $!{userBaseDO.sex}==2) checked="true" #end>女</input>
+			</dd>
+			<dd class="struct"> 
+				<div>
+					<label class="struct-label">出生日期：</label>
+					<input type="text" id="result" name="gmtBirth" placeholder="yyyy-mm-dd" value="$!{userBaseDO.gmtBirthString}"/>
+				</div>				
+				<div id="holder"></div>
+				<label class="struct-memo">(请填写出生日期!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">父亲：</label><input type="text" class="struct-input" name="father" value="$!{userBaseDO.father}"/>  
+				<label class="struct-memo">(请填写父亲名字，必须填写!)</label>
+			</dd>
+			#if($properFathers)
+				<dd class="struct"> 
+					<label class="struct-label">族谱关系：</label>
+					<select name="parentId" class="struct-input">
+					  <option #if(${userBaseDO.parentId}==0) selected #end value="0">未确认</option>
+					  #foreach($properFather in $properFathers)
+					  	<option #if(${userBaseDO.parentId}==${properFather.userId}) selected #end value="$!{properFather.userId}">$properFather.detailName</option>
+					  #end
+					</select>
+					<label class="struct-memo">(请选择正确的族谱关系？)</label>
+				</dd>
+				<dd class="struct"> 
+					<label class="struct-label">排行：</label>
+					<select name="parentId" class="struct-input">
+					  <option #if(${userBaseDO.parentId}==0) selected #end value="0">未确认</option>
+					  #foreach($properFather in $properFathers)
+					  	<option #if(${userBaseDO.parentId}==${properFather.userId}) selected #end value="$!{properFather.userId}">$properFather.detailName</option>
+					  #end
+					</select>
+					<label class="struct-memo">(表明本人是父母的第几个孩子!)</label>
+				</dd>				
+			#end
+			
+			<dd class="struct">
+				<label class="struct-label">母亲：</label><input type="text" class="struct-input" name="mother" value="$!{userBaseDO.mother}"/>  
+				<label class="struct-memo">(请填写母亲名字，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">妻子：</label><input type="text" class="struct-input" name="wife" value="$!{userBaseDO.wife}"/>  
+				<label class="struct-memo">(请填写妻子名字，建议填写!)</label>
+			</dd>
+			<dd class="struct">
+				<label class="struct-label">出生地点：</label><input type="text" id="birthAddr" class="struct-input" name="birthAddr" value="$!{userBaseDO.birthAddr}"/> 
+				<label class="struct-memo">(请填写出生地点，建议填写!)</label>
+			</dd>
+
+			<dd>
+			<hr class="hrStyle" />	
+			</dd>
+
+			<dd >
+				<div class="unstruct">
+					<label>+添加婚姻信息(可以不填写)：</label>
+				</div>
+				<div #if(!$!{marrige}) style="display: none;" #end>
+					<textarea name="marrige">$!{marrige}</textarea>
+				</div>					
+			</dd>
+			<dd>
+				<div class="unstruct">
+					<label>+添加生子信息(可以不填写)：</label>
+				</div>
+				<div #if(!$!{children}) style="display: none;" #end>
+					<textarea name="children">$!{children}</textarea>
+				</div>					
+			</dd>
+			<dd>
+				<div class="unstruct">
+					<label>+添加教育信息(可以不填写)：</label>
+				</div>
+				<div #if(!$!{edulog}) style="display: none;" #end>
+					<textarea name="edulog">$!{edulog}</textarea>
+				</div>					
+			</dd>
+			<dd>
+				<div class="unstruct">
+					<label>+添加个人成就(可以不填写)：</label>
+				</div>
+				<div #if(!$!{achievement}) style="display: none;" #end>
+					<textarea name="achievement">$!{achievement}</textarea>
+				</div>					
+			</dd>
+			<dd>
+				<div class="unstruct">
+					<label>+添加离世信息(可以不填写)：</label>
+				</div>
+				<div #if(!$!{death}) style="display: none;" #end>
+					<textarea name="death">$!{death}</textarea>
+				</div>					
+			</dd>
+			<dd>
+				<input type="submit" name="event_submit_do_add_user" class="btn" value="提交资料" />
+			</dd>
+		</dl>			
+	</form>
+</div>
+
+<script type="text/javascript" src="$ftreeContent.getURI('scripts/edit.js')"></script>
